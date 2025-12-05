@@ -1,0 +1,69 @@
+version: '3.8'
+
+services:
+
+  # Discord受信サーバ
+  discord-receiver:
+    build: ./discord-receiver
+    container_name: discord-receiver
+    restart: unless-stopped
+    environment:
+      - MAIN_SERVER_URL=http://main-server:8000
+      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+    depends_on:
+      - main-server
+    networks:
+      - app-network
+
+  # 中央サーバ
+  main-server:
+    build: ./main-server
+    container_name: main-server
+    restart: unless-stopped
+    environment:
+      - DATABASE_URL=postgresql://user:password@postgres:5432/botdb
+      - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - app-network
+
+  # PostgreSQL
+  postgres:
+    image: postgres:16-alpine
+    container_name: postgres
+    restart: unless-stopped
+    environment:
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+      - POSTGRES_DB=botdb
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user -d botdb" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - app-network
+
+  # 定期タイマー
+  cron:
+    build: ./cron
+    container_name: cron
+    restart: unless-stopped
+    environment:
+      - MAIN_SERVER_URL=http://main-server:8000
+    depends_on:
+      - main-server
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

@@ -1,0 +1,2 @@
+# 毎時0分にタイマーAPIを呼び出す
+0 * * * * curl -X POST -H "Content-Type: application/json" -d '{"previous_tick":"'$(date -u -d '1 hour ago' +\%Y-\%m-\%dT\%H:\%M:\%S.000Z)'","current_tick":"'$(date -u +\%Y-\%m-\%dT\%H:\%M:\%S.000Z)'"}' http://main-server:8000/api/v1/timer/tick
