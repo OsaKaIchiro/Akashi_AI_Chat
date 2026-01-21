@@ -161,7 +161,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY src/ ./src/
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "3000"]
+CMD ["uvicorn", "src.app.main:app", "--host", "0.0.0.0", "--port", "3000"]
 ```
 
 **main-server/Dockerfile**:
@@ -171,7 +171,7 @@ WORKDIR /app
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 COPY src/ ./src/
-CMD ["uvicorn", "src.main:app", "--host", "0.0.0.0", "--port", "8000"]
+CMD ["uvicorn", "src.app.main:app", "--host", "0.0.0.0", "--port", "8000"]
 ```
 
 **cron/Dockerfile**:
@@ -397,6 +397,7 @@ postgreSQLを使い、ユーザごとの情報を管理する。
 | discord_user_id | VARCHAR(20) | NO | - | DiscordユーザーID（ユニーク） |
 | discord_username | VARCHAR(100) | NO | - | Discordユーザー名 |
 | dm_channel_id | VARCHAR(20) | YES | NULL | DMチャンネルID（DM送信用） |
+| basic_info | JSONB | YES | NULL | ユーザーの基本情報（JSON形式） |
 | is_active | BOOLEAN | NO | true | 有効/無効フラグ |
 | created_at | TIMESTAMP | NO | CURRENT_TIMESTAMP | 登録日時 |
 | updated_at | TIMESTAMP | NO | CURRENT_TIMESTAMP | 更新日時 |
@@ -407,6 +408,7 @@ CREATE TABLE users (
     discord_user_id VARCHAR(20) NOT NULL UNIQUE,
     discord_username VARCHAR(100) NOT NULL,
     dm_channel_id VARCHAR(20),
+    basic_info JSONB,
     is_active BOOLEAN NOT NULL DEFAULT true,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -497,6 +499,86 @@ CREATE INDEX idx_message_logs_user_id ON message_logs(user_id);
 
 ---
 
+#### 5. cafeteria_menus（食堂メニューテーブル）
+
+食堂のメニュー情報を管理する。
+
+| カラム名 | 型 | NULL | デフォルト | 説明 |
+|---------|-----|------|-----------|------|
+| id | SERIAL | NO | - | 主キー |
+| date | TIMESTAMP | NO | - | メニュー提供日 |
+| data | JSONB | NO | - | メニューデータ（JSON形式） |
+| created_at | TIMESTAMP | NO | CURRENT_TIMESTAMP | 作成日時 |
+
+```sql
+CREATE TABLE cafeteria_menus (
+    id SERIAL PRIMARY KEY,
+    date TIMESTAMP NOT NULL,
+    data JSONB NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_cafeteria_menus_date ON cafeteria_menus(date);
+```
+
+---
+
+#### 6. dormitory_cafeteria_menus（寮食堂メニューテーブル）
+
+寮の食堂メニュー情報を管理する（朝・昼・晩で分けて管理）。
+
+| カラム名 | 型 | NULL | デフォルト | 説明 |
+|---------|-----|------|-----------|------|
+| id | SERIAL | NO | - | 主キー |
+| date | TIMESTAMP | NO | - | メニュー提供日 |
+| part | VARCHAR(20) | NO | - | 時間帯（朝/昼/晩） |
+| data | JSONB | NO | - | メニューデータ（JSON形式） |
+| created_at | TIMESTAMP | NO | CURRENT_TIMESTAMP | 作成日時 |
+
+```sql
+CREATE TABLE dormitory_cafeteria_menus (
+    id SERIAL PRIMARY KEY,
+    date TIMESTAMP NOT NULL,
+    part VARCHAR(20) NOT NULL,
+    data JSONB NOT NULL,
+    created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_dormitory_cafeteria_menus_date ON dormitory_cafeteria_menus(date);
+```
+
+---
+
+#### 7. conversation_logs（会話履歴テーブル）
+
+ユーザー・AI（Bot）両方の会話履歴を時系列で保存する。
+
+| カラム名 | 型 | NULL | デフォルト | 説明 |
+|---------|-----|------|-----------|------|
+| id | SERIAL | NO | - | 主キー |
+| message_id | VARCHAR(20) | YES | NULL | DiscordメッセージID（取得できる場合。ユニーク） |
+| user_id | INTEGER | YES | NULL | 外部キー（users.id）。会話の紐付け先ユーザー |
+| role | VARCHAR(20) | NO | - | 発言者（user/assistant/system） |
+| content | TEXT | NO | - | 発言内容 |
+| metadata | JSONB | YES | NULL | 添付などの拡張情報（JSON形式） |
+| created_at | TIMESTAMP | NO | CURRENT_TIMESTAMP | 作成日時 |
+
+```sql
+CREATE TABLE conversation_logs (
+  id SERIAL PRIMARY KEY,
+  message_id VARCHAR(20) UNIQUE,
+  user_id INTEGER REFERENCES users(id) ON DELETE CASCADE,
+  role VARCHAR(20) NOT NULL,
+  content TEXT NOT NULL,
+  metadata JSONB,
+  created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX idx_conversation_logs_user_id_created_at ON conversation_logs(user_id, created_at);
+```
+
+---
+
 ### ER図（簡易）
 
 ```
@@ -507,6 +589,13 @@ users
   ├──< reminders (1:N)
   │
   └──< message_logs (1:N)
+
+users
+  └──< conversation_logs (1:N)
+
+cafeteria_menus (独立)
+
+dormitory_cafeteria_menus (独立)
 ```
 
 ---

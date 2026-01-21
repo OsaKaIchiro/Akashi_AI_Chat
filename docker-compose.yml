@@ -20,6 +20,8 @@ services:
     build: ./main-server
     container_name: main-server
     restart: unless-stopped
+    ports:
+      - "8000:8000" # ホストからアクセス可能にする
     environment:
       - DATABASE_URL=postgresql://user:password@postgres:5432/botdb
       - DISCORD_BOT_TOKEN=${DISCORD_BOT_TOKEN}

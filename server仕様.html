@@ -1,0 +1,816 @@
+<!DOCTYPE html><html><head>
+      <title>server仕様</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      <link rel="stylesheet" href="file:///c:\Users\ichid\.vscode\extensions\shd101wyy.markdown-preview-enhanced-0.8.20\crossnote\dependencies\katex\katex.min.css">
+      
+      
+      
+      
+      
+      <style>
+      code[class*=language-],pre[class*=language-]{color:#333;background:0 0;font-family:Consolas,"Liberation Mono",Menlo,Courier,monospace;text-align:left;white-space:pre;word-spacing:normal;word-break:normal;word-wrap:normal;line-height:1.4;-moz-tab-size:8;-o-tab-size:8;tab-size:8;-webkit-hyphens:none;-moz-hyphens:none;-ms-hyphens:none;hyphens:none}pre[class*=language-]{padding:.8em;overflow:auto;border-radius:3px;background:#f5f5f5}:not(pre)>code[class*=language-]{padding:.1em;border-radius:.3em;white-space:normal;background:#f5f5f5}.token.blockquote,.token.comment{color:#969896}.token.cdata{color:#183691}.token.doctype,.token.macro.property,.token.punctuation,.token.variable{color:#333}.token.builtin,.token.important,.token.keyword,.token.operator,.token.rule{color:#a71d5d}.token.attr-value,.token.regex,.token.string,.token.url{color:#183691}.token.atrule,.token.boolean,.token.code,.token.command,.token.constant,.token.entity,.token.number,.token.property,.token.symbol{color:#0086b3}.token.prolog,.token.selector,.token.tag{color:#63a35c}.token.attr-name,.token.class,.token.class-name,.token.function,.token.id,.token.namespace,.token.pseudo-class,.token.pseudo-element,.token.url-reference .token.variable{color:#795da3}.token.entity{cursor:help}.token.title,.token.title .token.punctuation{font-weight:700;color:#1d3e81}.token.list{color:#ed6a43}.token.inserted{background-color:#eaffea;color:#55a532}.token.deleted{background-color:#ffecec;color:#bd2c00}.token.bold{font-weight:700}.token.italic{font-style:italic}.language-json .token.property{color:#183691}.language-markup .token.tag .token.punctuation{color:#333}.language-css .token.function,code.language-css{color:#0086b3}.language-yaml .token.atrule{color:#63a35c}code.language-yaml{color:#183691}.language-ruby .token.function{color:#333}.language-markdown .token.url{color:#795da3}.language-makefile .token.symbol{color:#795da3}.language-makefile .token.variable{color:#183691}.language-makefile .token.builtin{color:#0086b3}.language-bash .token.keyword{color:#0086b3}pre[data-line]{position:relative;padding:1em 0 1em 3em}pre[data-line] .line-highlight-wrapper{position:absolute;top:0;left:0;background-color:transparent;display:block;width:100%}pre[data-line] .line-highlight{position:absolute;left:0;right:0;padding:inherit 0;margin-top:1em;background:hsla(24,20%,50%,.08);background:linear-gradient(to right,hsla(24,20%,50%,.1) 70%,hsla(24,20%,50%,0));pointer-events:none;line-height:inherit;white-space:pre}pre[data-line] .line-highlight:before,pre[data-line] .line-highlight[data-end]:after{content:attr(data-start);position:absolute;top:.4em;left:.6em;min-width:1em;padding:0 .5em;background-color:hsla(24,20%,50%,.4);color:#f4f1ef;font:bold 65%/1.5 sans-serif;text-align:center;vertical-align:.3em;border-radius:999px;text-shadow:none;box-shadow:0 1px #fff}pre[data-line] .line-highlight[data-end]:after{content:attr(data-end);top:auto;bottom:.4em}html body{font-family:'Helvetica Neue',Helvetica,'Segoe UI',Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ol,html body>ul{margin-bottom:16px}html body ol,html body ul{padding-left:2em}html body ol.no-list,html body ul.no-list{padding:0;list-style-type:none}html body ol ol,html body ol ul,html body ul ol,html body ul ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;background-color:#f0f0f0;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:700;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:700}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::after,html body code::before{letter-spacing:-.2em;content:'\00a0'}html body pre>code{padding:0;margin:0;word-break:normal;white-space:pre;background:0 0;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:after,html body pre code:before,html body pre tt:after,html body pre tt:before{content:normal}html body blockquote,html body dl,html body ol,html body p,html body pre,html body ul{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body code,html body pre{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview ul{list-style:disc}.markdown-preview ul ul{list-style:circle}.markdown-preview ul ul ul{list-style:square}.markdown-preview ol{list-style:decimal}.markdown-preview ol ol,.markdown-preview ul ol{list-style-type:lower-roman}.markdown-preview ol ol ol,.markdown-preview ol ul ol,.markdown-preview ul ol ol,.markdown-preview ul ul ol{list-style-type:lower-alpha}.markdown-preview .newpage,.markdown-preview .pagebreak{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center!important}.markdown-preview:not([data-for=preview]) .code-chunk .code-chunk-btn-group{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .status{display:none}.markdown-preview:not([data-for=preview]) .code-chunk .output-div{margin-bottom:16px}.markdown-preview .md-toc{padding:0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link div,.markdown-preview .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}.markdown-preview .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0;min-height:100vh}@media screen and (min-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode]) .markdown-preview{font-size:14px!important;padding:1em}}@media print{html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for=html-export]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,.66);border:4px solid rgba(150,150,150,.66);background-clip:content-box}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc{padding:0 16px}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link{display:inline;padding:.25rem 0}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link div,html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper .md-toc-link p{display:inline}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc .md-toc .md-toc-link-wrapper.highlighted .md-toc-link{font-weight:800}html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% - 300px);padding:2em calc(50% - 457px - 300px / 2);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for=html-export]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for=html-export]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+/* Please visit the URL below for more information: */
+/*   https://shd101wyy.github.io/markdown-preview-enhanced/#/customize-css */
+
+      </style>
+      <!-- The content below will be included at the end of the <head> element. --><script type="text/javascript">
+  document.addEventListener("DOMContentLoaded", function () {
+    // your code here
+  });
+</script></head><body for="html-export">
+    
+    
+      <div class="crossnote markdown-preview  ">
+      
+<h1 id="サーバ仕様">サーバ仕様 </h1>
+<h2 id="技術選定">技術選定 </h2>
+<h3 id="言語フレームワーク">言語・フレームワーク </h3>
+<table>
+<thead>
+<tr>
+<th>コンポーネント</th>
+<th>技術</th>
+<th>理由</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Discord受信サーバ</td>
+<td><strong>Python + FastAPI</strong></td>
+<td>言語統一、discord.py使用可</td>
+</tr>
+<tr>
+<td>中央サーバ</td>
+<td><strong>Python + FastAPI</strong></td>
+<td>シンプルなAPI構築、型ヒント対応</td>
+</tr>
+<tr>
+<td>DB</td>
+<td><strong>PostgreSQL</strong></td>
+<td>信頼性、JSONサポート、無料</td>
+</tr>
+<tr>
+<td>定期タイマー</td>
+<td><strong>cron (コンテナ内)</strong></td>
+<td>シンプル、追加サービス不要</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="インフラ構成">インフラ構成 </h2>
+<h3 id="概要図">概要図 </h3>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>┌─────────────────────────────────────────────────────────────┐
+│                     Docker Network                          │
+│                                                             │
+│  ┌──────────────┐    ┌──────────────┐    ┌──────────────┐  │
+│  │   discord    │    │    main      │    │   postgres   │  │
+│  │   receiver   │───▶│   server     │───▶│     db       │  │
+│  │  (FastAPI)   │    │  (FastAPI)   │    │              │  │
+│  └──────────────┘    └──────────────┘    └──────────────┘  │
+│                             ▲                               │
+│                             │                               │
+│                      ┌──────────────┐                       │
+│                      │    cron      │                       │
+│                      │   (timer)    │                       │
+│                      └──────────────┘                       │
+└─────────────────────────────────────────────────────────────┘
+</code></pre><h3 id="コンテナ構成">コンテナ構成 </h3>
+<table>
+<thead>
+<tr>
+<th>サービス名</th>
+<th>イメージ</th>
+<th>ポート</th>
+<th>役割</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>discord-receiver</td>
+<td>python:3.12-slim</td>
+<td>3000 (内部)</td>
+<td>Discord Webhook受信 → 中央サーバへ転送</td>
+</tr>
+<tr>
+<td>main-server</td>
+<td>python:3.12-slim</td>
+<td>8000 (内部)</td>
+<td>メイン処理、Discord送信、DB操作</td>
+</tr>
+<tr>
+<td>postgres</td>
+<td>postgres:16-alpine</td>
+<td>5432 (内部)</td>
+<td>データベース</td>
+</tr>
+<tr>
+<td>cron</td>
+<td>alpine + curl</td>
+<td>-</td>
+<td>定期的にmain-serverへPOST</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="docker-composeyml">docker-compose.yml </h3>
+<pre data-role="codeBlock" data-info="yaml" class="language-yaml yaml"><code><span class="token key atrule">version</span><span class="token punctuation">:</span> <span class="token string">'3.8'</span>
+
+<span class="token key atrule">services</span><span class="token punctuation">:</span>
+
+  <span class="token comment"># Discord受信サーバ</span>
+  <span class="token key atrule">discord-receiver</span><span class="token punctuation">:</span>
+    <span class="token key atrule">build</span><span class="token punctuation">:</span> ./discord<span class="token punctuation">-</span>receiver
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> discord<span class="token punctuation">-</span>receiver
+    <span class="token key atrule">restart</span><span class="token punctuation">:</span> unless<span class="token punctuation">-</span>stopped
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> MAIN_SERVER_URL=http<span class="token punctuation">:</span>//main<span class="token punctuation">-</span>server<span class="token punctuation">:</span><span class="token number">8000</span>
+      <span class="token punctuation">-</span> DISCORD_BOT_TOKEN=$<span class="token punctuation">{</span>DISCORD_BOT_TOKEN<span class="token punctuation">}</span>
+    <span class="token key atrule">depends_on</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> main<span class="token punctuation">-</span>server
+    <span class="token key atrule">networks</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> app<span class="token punctuation">-</span>network
+
+  <span class="token comment"># 中央サーバ</span>
+  <span class="token key atrule">main-server</span><span class="token punctuation">:</span>
+    <span class="token key atrule">build</span><span class="token punctuation">:</span> ./main<span class="token punctuation">-</span>server
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> main<span class="token punctuation">-</span>server
+    <span class="token key atrule">restart</span><span class="token punctuation">:</span> unless<span class="token punctuation">-</span>stopped
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> DATABASE_URL=postgresql<span class="token punctuation">:</span>//user<span class="token punctuation">:</span>password@postgres<span class="token punctuation">:</span>5432/botdb
+      <span class="token punctuation">-</span> DISCORD_BOT_TOKEN=$<span class="token punctuation">{</span>DISCORD_BOT_TOKEN<span class="token punctuation">}</span>
+    <span class="token key atrule">depends_on</span><span class="token punctuation">:</span>
+      <span class="token key atrule">postgres</span><span class="token punctuation">:</span>
+        <span class="token key atrule">condition</span><span class="token punctuation">:</span> service_healthy
+    <span class="token key atrule">networks</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> app<span class="token punctuation">-</span>network
+
+  <span class="token comment"># PostgreSQL</span>
+  <span class="token key atrule">postgres</span><span class="token punctuation">:</span>
+    <span class="token key atrule">image</span><span class="token punctuation">:</span> postgres<span class="token punctuation">:</span>16<span class="token punctuation">-</span>alpine
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> postgres
+    <span class="token key atrule">restart</span><span class="token punctuation">:</span> unless<span class="token punctuation">-</span>stopped
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> POSTGRES_USER=user
+      <span class="token punctuation">-</span> POSTGRES_PASSWORD=password
+      <span class="token punctuation">-</span> POSTGRES_DB=botdb
+    <span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> postgres_data<span class="token punctuation">:</span>/var/lib/postgresql/data
+      <span class="token punctuation">-</span> ./init.sql<span class="token punctuation">:</span>/docker<span class="token punctuation">-</span>entrypoint<span class="token punctuation">-</span>initdb.d/init.sql
+    <span class="token key atrule">healthcheck</span><span class="token punctuation">:</span>
+      <span class="token key atrule">test</span><span class="token punctuation">:</span> <span class="token punctuation">[</span><span class="token string">"CMD-SHELL"</span><span class="token punctuation">,</span> <span class="token string">"pg_isready -U user -d botdb"</span><span class="token punctuation">]</span>
+      <span class="token key atrule">interval</span><span class="token punctuation">:</span> 5s
+      <span class="token key atrule">timeout</span><span class="token punctuation">:</span> 5s
+      <span class="token key atrule">retries</span><span class="token punctuation">:</span> <span class="token number">5</span>
+    <span class="token key atrule">networks</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> app<span class="token punctuation">-</span>network
+
+  <span class="token comment"># 定期タイマー</span>
+  <span class="token key atrule">cron</span><span class="token punctuation">:</span>
+    <span class="token key atrule">build</span><span class="token punctuation">:</span> ./cron
+    <span class="token key atrule">container_name</span><span class="token punctuation">:</span> cron
+    <span class="token key atrule">restart</span><span class="token punctuation">:</span> unless<span class="token punctuation">-</span>stopped
+    <span class="token key atrule">environment</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> MAIN_SERVER_URL=http<span class="token punctuation">:</span>//main<span class="token punctuation">-</span>server<span class="token punctuation">:</span><span class="token number">8000</span>
+    <span class="token key atrule">depends_on</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> main<span class="token punctuation">-</span>server
+    <span class="token key atrule">networks</span><span class="token punctuation">:</span>
+      <span class="token punctuation">-</span> app<span class="token punctuation">-</span>network
+
+<span class="token key atrule">networks</span><span class="token punctuation">:</span>
+  <span class="token key atrule">app-network</span><span class="token punctuation">:</span>
+    <span class="token key atrule">driver</span><span class="token punctuation">:</span> bridge
+
+<span class="token key atrule">volumes</span><span class="token punctuation">:</span>
+  <span class="token key atrule">postgres_data</span><span class="token punctuation">:</span>
+</code></pre><hr>
+<h3 id="ディレクトリ構成">ディレクトリ構成 </h3>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>project/
+├── docker-compose.yml
+├── .env                      # 環境変数（DISCORD_BOT_TOKEN等）
+├── init.sql                  # DB初期化SQL
+│
+├── discord-receiver/         # Discord受信サーバ
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── src/
+│       └── main.py
+│
+├── main-server/              # 中央サーバ
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── src/
+│       ├── main.py
+│       ├── api/
+│       ├── services/
+│       └── models/
+│
+└── cron/                     # 定期タイマー
+    ├── Dockerfile
+    └── crontab
+</code></pre><hr>
+<h3 id="各dockerfile簡易版">各Dockerfile（簡易版） </h3>
+<p><strong>discord-receiver/Dockerfile</strong>:</p>
+<pre data-role="codeBlock" data-info="dockerfile" class="language-dockerfile dockerfile"><code><span class="token instruction"><span class="token keyword keyword-FROM">FROM</span> python:3.12-slim</span>
+<span class="token instruction"><span class="token keyword keyword-WORKDIR">WORKDIR</span> /app</span>
+<span class="token instruction"><span class="token keyword keyword-COPY">COPY</span> requirements.txt .</span>
+<span class="token instruction"><span class="token keyword keyword-RUN">RUN</span> pip install --no-cache-dir -r requirements.txt</span>
+<span class="token instruction"><span class="token keyword keyword-COPY">COPY</span> src/ ./src/</span>
+<span class="token instruction"><span class="token keyword keyword-CMD">CMD</span> [<span class="token string">"uvicorn"</span>, <span class="token string">"src.app.main:app"</span>, <span class="token string">"--host"</span>, <span class="token string">"0.0.0.0"</span>, <span class="token string">"--port"</span>, <span class="token string">"3000"</span>]</span>
+</code></pre><p><strong>main-server/Dockerfile</strong>:</p>
+<pre data-role="codeBlock" data-info="dockerfile" class="language-dockerfile dockerfile"><code><span class="token instruction"><span class="token keyword keyword-FROM">FROM</span> python:3.12-slim</span>
+<span class="token instruction"><span class="token keyword keyword-WORKDIR">WORKDIR</span> /app</span>
+<span class="token instruction"><span class="token keyword keyword-COPY">COPY</span> requirements.txt .</span>
+<span class="token instruction"><span class="token keyword keyword-RUN">RUN</span> pip install --no-cache-dir -r requirements.txt</span>
+<span class="token instruction"><span class="token keyword keyword-COPY">COPY</span> src/ ./src/</span>
+<span class="token instruction"><span class="token keyword keyword-CMD">CMD</span> [<span class="token string">"uvicorn"</span>, <span class="token string">"src.app.main:app"</span>, <span class="token string">"--host"</span>, <span class="token string">"0.0.0.0"</span>, <span class="token string">"--port"</span>, <span class="token string">"8000"</span>]</span>
+</code></pre><p><strong>cron/Dockerfile</strong>:</p>
+<pre data-role="codeBlock" data-info="dockerfile" class="language-dockerfile dockerfile"><code><span class="token instruction"><span class="token keyword keyword-FROM">FROM</span> alpine:latest</span>
+<span class="token instruction"><span class="token keyword keyword-RUN">RUN</span> apk add --no-cache curl tzdata</span>
+<span class="token instruction"><span class="token keyword keyword-ENV">ENV</span> TZ=Asia/Tokyo</span>
+<span class="token instruction"><span class="token keyword keyword-COPY">COPY</span> crontab /etc/crontabs/root</span>
+<span class="token instruction"><span class="token keyword keyword-CMD">CMD</span> [<span class="token string">"crond"</span>, <span class="token string">"-f"</span>]</span>
+</code></pre><p><strong>cron/crontab</strong>:</p>
+<pre data-role="codeBlock" data-info="" class="language-text"><code># 毎時0分にタイマーAPIを呼び出す
+0 * * * * curl -X POST -H "Content-Type: application/json" -d '{"previous_tick":"'$(date -u -d '1 hour ago' +\%Y-\%m-\%dT\%H:\%M:\%S.000Z)'","current_tick":"'$(date -u +\%Y-\%m-\%dT\%H:\%M:\%S.000Z)'"}' http://main-server:8000/api/v1/timer/tick
+</code></pre><hr>
+<h3 id="共通-requirementstxt">共通 requirements.txt </h3>
+<p><strong>discord-receiver/requirements.txt</strong>:</p>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>fastapi==0.104.1
+uvicorn==0.24.0
+httpx==0.25.2
+discord.py==2.3.2
+</code></pre><p><strong>main-server/requirements.txt</strong>:</p>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>fastapi==0.104.1
+uvicorn==0.24.0
+sqlalchemy==2.0.23
+psycopg2-binary==2.9.9
+discord.py==2.3.2
+pydantic==2.5.2
+</code></pre><hr>
+<h3 id="環境変数-env">環境変数 (.env) </h3>
+<pre data-role="codeBlock" data-info="env" class="language-env env"><code># Discord
+DISCORD_BOT_TOKEN=your_bot_token_here
+
+# PostgreSQL（本番では変更必須）
+POSTGRES_USER=user
+POSTGRES_PASSWORD=password
+POSTGRES_DB=botdb
+</code></pre><hr>
+<h3 id="起動コマンド">起動コマンド </h3>
+<pre data-role="codeBlock" data-info="bash" class="language-bash bash"><code><span class="token comment"># 初回起動</span>
+<span class="token function">docker-compose</span> up <span class="token parameter variable">-d</span> <span class="token parameter variable">--build</span>
+
+<span class="token comment"># ログ確認</span>
+<span class="token function">docker-compose</span> logs <span class="token parameter variable">-f</span>
+
+<span class="token comment"># 停止</span>
+<span class="token function">docker-compose</span> down
+
+<span class="token comment"># DBデータも含めて完全削除</span>
+<span class="token function">docker-compose</span> down <span class="token parameter variable">-v</span>
+</code></pre><hr>
+<h2 id="discord受信サーバ">discord受信サーバ </h2>
+<h3 id="概要">概要 </h3>
+<p>・discordをwebhookで監視し、得られたメッセージを中央サーバに送る</p>
+<h3 id="詳細">詳細 </h3>
+<h2 id="中央サーバ">中央サーバ </h2>
+<h3 id="概要-1">概要 </h3>
+<p>・ユーザーメッセージを受け取り、内部で返答を作成して、discordSDKで送信する。<br>
+・定期タイマーをpostリクエストで受けとって、該当者に返答を作成して、discordSDKで送信する。</p>
+<h3 id="api仕様">API仕様 </h3>
+<p>※ 内部通信専用のため、認証ヘッダーは不要（ファイアウォール/ネットワークレベルでアクセス制限を行う）</p>
+<hr>
+<h4 id="1-ユーザーメッセージ受信-api">1. ユーザーメッセージ受信 API </h4>
+<p><strong>エンドポイント</strong>: <code>POST /api/v1/messages</code></p>
+<p><strong>概要</strong>: Discord受信サーバから転送されたユーザーメッセージを受け取り、処理して返答を生成・送信する。</p>
+<p><strong>リクエストヘッダー</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>ヘッダー名</th>
+<th>必須</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>○</td>
+<td><code>application/json</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>リクエストボディ</strong>:</p>
+<pre data-role="codeBlock" data-info="json" class="language-json json"><code><span class="token punctuation">{</span>
+  <span class="token property">"discord_user_id"</span><span class="token operator">:</span> <span class="token string">"123456789012345678"</span><span class="token punctuation">,</span>
+  <span class="token property">"discord_username"</span><span class="token operator">:</span> <span class="token string">"example_user"</span><span class="token punctuation">,</span>
+  <span class="token property">"guild_id"</span><span class="token operator">:</span> <span class="token string">"987654321098765432"</span><span class="token punctuation">,</span>
+  <span class="token property">"channel_id"</span><span class="token operator">:</span> <span class="token string">"111222333444555666"</span><span class="token punctuation">,</span>
+  <span class="token property">"message_id"</span><span class="token operator">:</span> <span class="token string">"999888777666555444"</span><span class="token punctuation">,</span>
+  <span class="token property">"content"</span><span class="token operator">:</span> <span class="token string">"ユーザーのメッセージ本文"</span><span class="token punctuation">,</span>
+  <span class="token property">"timestamp"</span><span class="token operator">:</span> <span class="token string">"2025-12-03T10:30:00.000Z"</span><span class="token punctuation">,</span>
+  <span class="token property">"attachments"</span><span class="token operator">:</span> <span class="token punctuation">[</span>
+    <span class="token punctuation">{</span>
+      <span class="token property">"url"</span><span class="token operator">:</span> <span class="token string">"https://cdn.discordapp.com/attachments/..."</span><span class="token punctuation">,</span>
+      <span class="token property">"filename"</span><span class="token operator">:</span> <span class="token string">"image.png"</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">]</span>
+<span class="token punctuation">}</span>
+</code></pre><table>
+<thead>
+<tr>
+<th>フィールド</th>
+<th>型</th>
+<th>必須</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>discord_user_id</td>
+<td>string</td>
+<td>○</td>
+<td>DiscordユーザーID（スノーフレーク）</td>
+</tr>
+<tr>
+<td>discord_username</td>
+<td>string</td>
+<td>○</td>
+<td>Discordユーザー名</td>
+</tr>
+<tr>
+<td>guild_id</td>
+<td>string / null</td>
+<td>○</td>
+<td>サーバーID（DMの場合は<code>null</code>）</td>
+</tr>
+<tr>
+<td>channel_id</td>
+<td>string</td>
+<td>○</td>
+<td>チャンネルID（※DMでも存在する。DMチャンネルのID）</td>
+</tr>
+<tr>
+<td>message_id</td>
+<td>string</td>
+<td>○</td>
+<td>メッセージID（重複排除用）</td>
+</tr>
+<tr>
+<td>content</td>
+<td>string</td>
+<td>○</td>
+<td>メッセージ本文</td>
+</tr>
+<tr>
+<td>timestamp</td>
+<td>string (ISO 8601)</td>
+<td>○</td>
+<td>メッセージ送信時刻</td>
+</tr>
+<tr>
+<td>attachments</td>
+<td>array</td>
+<td>△</td>
+<td>添付ファイル（URLとファイル名のみ。省略可）</td>
+</tr>
+<tr>
+<td>attachments[].url</td>
+<td>string</td>
+<td>○</td>
+<td>添付ファイルのURL</td>
+</tr>
+<tr>
+<td>attachments[].filename</td>
+<td>string</td>
+<td>○</td>
+<td>ファイル名</td>
+</tr>
+</tbody>
+</table>
+<p><strong>レスポンス</strong>:</p>
+<p>受付成功時（200 OK）:</p>
+<pre data-role="codeBlock" data-info="json" class="language-json json"><code><span class="token punctuation">{</span>
+  <span class="token property">"status"</span><span class="token operator">:</span> <span class="token string">"ok"</span>
+<span class="token punctuation">}</span>
+</code></pre><p>エラー時（4xx / 5xx）:</p>
+<pre data-role="codeBlock" data-info="json" class="language-json json"><code><span class="token punctuation">{</span>
+  <span class="token property">"status"</span><span class="token operator">:</span> <span class="token string">"error"</span><span class="token punctuation">,</span>
+  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"エラー内容の説明"</span>
+<span class="token punctuation">}</span>
+</code></pre><table>
+<thead>
+<tr>
+<th>HTTPステータス</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>受付成功</td>
+</tr>
+<tr>
+<td>400</td>
+<td>リクエスト形式が不正</td>
+</tr>
+<tr>
+<td>500</td>
+<td>サーバ内部エラー</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h4 id="2-定期タイマー-api">2. 定期タイマー API </h4>
+<p><strong>エンドポイント</strong>: <code>POST /api/v1/timer/tick</code></p>
+<p><strong>概要</strong>: 外部タイマー（cron等）から定期的に呼び出される。中央サーバは経過時間を元に、DBを参照して該当ユーザーへ通知を送信する。</p>
+<p><strong>リクエストヘッダー</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>ヘッダー名</th>
+<th>必須</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Content-Type</td>
+<td>○</td>
+<td><code>application/json</code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>リクエストボディ</strong>:</p>
+<pre data-role="codeBlock" data-info="json" class="language-json json"><code><span class="token punctuation">{</span>
+  <span class="token property">"previous_tick"</span><span class="token operator">:</span> <span class="token string">"2025-12-03T08:00:00.000Z"</span><span class="token punctuation">,</span>
+  <span class="token property">"current_tick"</span><span class="token operator">:</span> <span class="token string">"2025-12-03T09:00:00.000Z"</span>
+<span class="token punctuation">}</span>
+</code></pre><table>
+<thead>
+<tr>
+<th>フィールド</th>
+<th>型</th>
+<th>必須</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>previous_tick</td>
+<td>string (ISO 8601)</td>
+<td>○</td>
+<td>前回のタイマー発火時刻</td>
+</tr>
+<tr>
+<td>current_tick</td>
+<td>string (ISO 8601)</td>
+<td>○</td>
+<td>今回のタイマー発火時刻</td>
+</tr>
+</tbody>
+</table>
+<p><strong>レスポンス</strong>:</p>
+<p>受付成功時（200 OK）:</p>
+<pre data-role="codeBlock" data-info="json" class="language-json json"><code><span class="token punctuation">{</span>
+  <span class="token property">"status"</span><span class="token operator">:</span> <span class="token string">"ok"</span>
+<span class="token punctuation">}</span>
+</code></pre><p>エラー時（4xx / 5xx）:</p>
+<pre data-role="codeBlock" data-info="json" class="language-json json"><code><span class="token punctuation">{</span>
+  <span class="token property">"status"</span><span class="token operator">:</span> <span class="token string">"error"</span><span class="token punctuation">,</span>
+  <span class="token property">"message"</span><span class="token operator">:</span> <span class="token string">"エラー内容の説明"</span>
+<span class="token punctuation">}</span>
+</code></pre><table>
+<thead>
+<tr>
+<th>HTTPステータス</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>200</td>
+<td>受付成功</td>
+</tr>
+<tr>
+<td>400</td>
+<td>リクエスト形式が不正</td>
+</tr>
+<tr>
+<td>500</td>
+<td>サーバ内部エラー</td>
+</tr>
+</tbody>
+</table>
+<p><strong>備考</strong>: 対象ユーザーのフィルタリング（誰に通知を送るか）は、中央サーバ内でDBを参照して決定する。</p>
+<h2 id="db">DB </h2>
+<h3 id="概要-2">概要 </h3>
+<p>postgreSQLを使い、ユーザごとの情報を管理する。</p>
+<h3 id="テーブル設計">テーブル設計 </h3>
+<hr>
+<h4 id="1-usersユーザーテーブル">1. users（ユーザーテーブル） </h4>
+<p>ユーザーの基本情報を管理する。</p>
+<table>
+<thead>
+<tr>
+<th>カラム名</th>
+<th>型</th>
+<th>NULL</th>
+<th>デフォルト</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>SERIAL</td>
+<td>NO</td>
+<td>-</td>
+<td>内部ID（主キー）</td>
+</tr>
+<tr>
+<td>discord_user_id</td>
+<td>VARCHAR(20)</td>
+<td>NO</td>
+<td>-</td>
+<td>DiscordユーザーID（ユニーク）</td>
+</tr>
+<tr>
+<td>discord_username</td>
+<td>VARCHAR(100)</td>
+<td>NO</td>
+<td>-</td>
+<td>Discordユーザー名</td>
+</tr>
+<tr>
+<td>dm_channel_id</td>
+<td>VARCHAR(20)</td>
+<td>YES</td>
+<td>NULL</td>
+<td>DMチャンネルID（DM送信用）</td>
+</tr>
+<tr>
+<td>is_active</td>
+<td>BOOLEAN</td>
+<td>NO</td>
+<td>true</td>
+<td>有効/無効フラグ</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>TIMESTAMP</td>
+<td>NO</td>
+<td>CURRENT_TIMESTAMP</td>
+<td>登録日時</td>
+</tr>
+<tr>
+<td>updated_at</td>
+<td>TIMESTAMP</td>
+<td>NO</td>
+<td>CURRENT_TIMESTAMP</td>
+<td>更新日時</td>
+</tr>
+</tbody>
+</table>
+<pre data-role="codeBlock" data-info="sql" class="language-sql sql"><code><span class="token keyword keyword-CREATE">CREATE</span> <span class="token keyword keyword-TABLE">TABLE</span> users <span class="token punctuation">(</span>
+    id <span class="token keyword keyword-SERIAL">SERIAL</span> <span class="token keyword keyword-PRIMARY">PRIMARY</span> <span class="token keyword keyword-KEY">KEY</span><span class="token punctuation">,</span>
+    discord_user_id <span class="token keyword keyword-VARCHAR">VARCHAR</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword keyword-UNIQUE">UNIQUE</span><span class="token punctuation">,</span>
+    discord_username <span class="token keyword keyword-VARCHAR">VARCHAR</span><span class="token punctuation">(</span><span class="token number">100</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    dm_channel_id <span class="token keyword keyword-VARCHAR">VARCHAR</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+    is_active <span class="token keyword keyword-BOOLEAN">BOOLEAN</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword keyword-DEFAULT">DEFAULT</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    created_at <span class="token keyword keyword-TIMESTAMP">TIMESTAMP</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword keyword-DEFAULT">DEFAULT</span> <span class="token keyword keyword-CURRENT_TIMESTAMP">CURRENT_TIMESTAMP</span><span class="token punctuation">,</span>
+    updated_at <span class="token keyword keyword-TIMESTAMP">TIMESTAMP</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword keyword-DEFAULT">DEFAULT</span> <span class="token keyword keyword-CURRENT_TIMESTAMP">CURRENT_TIMESTAMP</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre><hr>
+<h4 id="2-user_settingsユーザー設定テーブル">2. user_settings（ユーザー設定テーブル） </h4>
+<p>ユーザーごとの設定（通知時間帯など）を管理する。</p>
+<table>
+<thead>
+<tr>
+<th>カラム名</th>
+<th>型</th>
+<th>NULL</th>
+<th>デフォルト</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>SERIAL</td>
+<td>NO</td>
+<td>-</td>
+<td>主キー</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>INTEGER</td>
+<td>NO</td>
+<td>-</td>
+<td>外部キー（<a href="http://users.id">users.id</a>）</td>
+</tr>
+<tr>
+<td>notification_enabled</td>
+<td>BOOLEAN</td>
+<td>NO</td>
+<td>true</td>
+<td>通知を受け取るか</td>
+</tr>
+<tr>
+<td>notification_time</td>
+<td>TIME</td>
+<td>YES</td>
+<td>NULL</td>
+<td>通知希望時刻（例: 09:00）</td>
+</tr>
+<tr>
+<td>timezone</td>
+<td>VARCHAR(50)</td>
+<td>NO</td>
+<td>'Asia/Tokyo'</td>
+<td>タイムゾーン</td>
+</tr>
+</tbody>
+</table>
+<pre data-role="codeBlock" data-info="sql" class="language-sql sql"><code><span class="token keyword keyword-CREATE">CREATE</span> <span class="token keyword keyword-TABLE">TABLE</span> user_settings <span class="token punctuation">(</span>
+    id <span class="token keyword keyword-SERIAL">SERIAL</span> <span class="token keyword keyword-PRIMARY">PRIMARY</span> <span class="token keyword keyword-KEY">KEY</span><span class="token punctuation">,</span>
+    user_id <span class="token keyword keyword-INTEGER">INTEGER</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword keyword-REFERENCES">REFERENCES</span> users<span class="token punctuation">(</span>id<span class="token punctuation">)</span> <span class="token keyword keyword-ON">ON</span> <span class="token keyword keyword-DELETE">DELETE</span> <span class="token keyword keyword-CASCADE">CASCADE</span><span class="token punctuation">,</span>
+    notification_enabled <span class="token keyword keyword-BOOLEAN">BOOLEAN</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword keyword-DEFAULT">DEFAULT</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    notification_time <span class="token keyword keyword-TIME">TIME</span><span class="token punctuation">,</span>
+    timezone <span class="token keyword keyword-VARCHAR">VARCHAR</span><span class="token punctuation">(</span><span class="token number">50</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword keyword-DEFAULT">DEFAULT</span> <span class="token string">'Asia/Tokyo'</span><span class="token punctuation">,</span>
+    <span class="token keyword keyword-UNIQUE">UNIQUE</span><span class="token punctuation">(</span>user_id<span class="token punctuation">)</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre><hr>
+<h4 id="3-remindersリマインダーテーブル">3. reminders（リマインダーテーブル） </h4>
+<p>ユーザーが登録したリマインダー/タスクを管理する。</p>
+<table>
+<thead>
+<tr>
+<th>カラム名</th>
+<th>型</th>
+<th>NULL</th>
+<th>デフォルト</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>SERIAL</td>
+<td>NO</td>
+<td>-</td>
+<td>主キー</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>INTEGER</td>
+<td>NO</td>
+<td>-</td>
+<td>外部キー（<a href="http://users.id">users.id</a>）</td>
+</tr>
+<tr>
+<td>content</td>
+<td>TEXT</td>
+<td>NO</td>
+<td>-</td>
+<td>リマインダー内容</td>
+</tr>
+<tr>
+<td>remind_at</td>
+<td>TIMESTAMP</td>
+<td>NO</td>
+<td>-</td>
+<td>通知予定日時</td>
+</tr>
+<tr>
+<td>is_completed</td>
+<td>BOOLEAN</td>
+<td>NO</td>
+<td>false</td>
+<td>完了フラグ</td>
+</tr>
+<tr>
+<td>is_notified</td>
+<td>BOOLEAN</td>
+<td>NO</td>
+<td>false</td>
+<td>通知済みフラグ</td>
+</tr>
+<tr>
+<td>created_at</td>
+<td>TIMESTAMP</td>
+<td>NO</td>
+<td>CURRENT_TIMESTAMP</td>
+<td>作成日時</td>
+</tr>
+</tbody>
+</table>
+<pre data-role="codeBlock" data-info="sql" class="language-sql sql"><code><span class="token keyword keyword-CREATE">CREATE</span> <span class="token keyword keyword-TABLE">TABLE</span> reminders <span class="token punctuation">(</span>
+    id <span class="token keyword keyword-SERIAL">SERIAL</span> <span class="token keyword keyword-PRIMARY">PRIMARY</span> <span class="token keyword keyword-KEY">KEY</span><span class="token punctuation">,</span>
+    user_id <span class="token keyword keyword-INTEGER">INTEGER</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword keyword-REFERENCES">REFERENCES</span> users<span class="token punctuation">(</span>id<span class="token punctuation">)</span> <span class="token keyword keyword-ON">ON</span> <span class="token keyword keyword-DELETE">DELETE</span> <span class="token keyword keyword-CASCADE">CASCADE</span><span class="token punctuation">,</span>
+    content <span class="token keyword keyword-TEXT">TEXT</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    remind_at <span class="token keyword keyword-TIMESTAMP">TIMESTAMP</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    is_completed <span class="token keyword keyword-BOOLEAN">BOOLEAN</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword keyword-DEFAULT">DEFAULT</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    is_notified <span class="token keyword keyword-BOOLEAN">BOOLEAN</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword keyword-DEFAULT">DEFAULT</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    created_at <span class="token keyword keyword-TIMESTAMP">TIMESTAMP</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword keyword-DEFAULT">DEFAULT</span> <span class="token keyword keyword-CURRENT_TIMESTAMP">CURRENT_TIMESTAMP</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword keyword-CREATE">CREATE</span> <span class="token keyword keyword-INDEX">INDEX</span> idx_reminders_remind_at <span class="token keyword keyword-ON">ON</span> reminders<span class="token punctuation">(</span>remind_at<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword keyword-CREATE">CREATE</span> <span class="token keyword keyword-INDEX">INDEX</span> idx_reminders_user_id <span class="token keyword keyword-ON">ON</span> reminders<span class="token punctuation">(</span>user_id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre><hr>
+<h4 id="4-message_logsメッセージログテーブル">4. message_logs（メッセージログテーブル） </h4>
+<p>処理済みメッセージを記録し、重複処理を防止する。</p>
+<table>
+<thead>
+<tr>
+<th>カラム名</th>
+<th>型</th>
+<th>NULL</th>
+<th>デフォルト</th>
+<th>説明</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>id</td>
+<td>SERIAL</td>
+<td>NO</td>
+<td>-</td>
+<td>主キー</td>
+</tr>
+<tr>
+<td>message_id</td>
+<td>VARCHAR(20)</td>
+<td>NO</td>
+<td>-</td>
+<td>DiscordメッセージID（ユニーク）</td>
+</tr>
+<tr>
+<td>user_id</td>
+<td>INTEGER</td>
+<td>NO</td>
+<td>-</td>
+<td>外部キー（<a href="http://users.id">users.id</a>）</td>
+</tr>
+<tr>
+<td>content</td>
+<td>TEXT</td>
+<td>NO</td>
+<td>-</td>
+<td>メッセージ内容</td>
+</tr>
+<tr>
+<td>processed_at</td>
+<td>TIMESTAMP</td>
+<td>NO</td>
+<td>CURRENT_TIMESTAMP</td>
+<td>処理日時</td>
+</tr>
+</tbody>
+</table>
+<pre data-role="codeBlock" data-info="sql" class="language-sql sql"><code><span class="token keyword keyword-CREATE">CREATE</span> <span class="token keyword keyword-TABLE">TABLE</span> message_logs <span class="token punctuation">(</span>
+    id <span class="token keyword keyword-SERIAL">SERIAL</span> <span class="token keyword keyword-PRIMARY">PRIMARY</span> <span class="token keyword keyword-KEY">KEY</span><span class="token punctuation">,</span>
+    message_id <span class="token keyword keyword-VARCHAR">VARCHAR</span><span class="token punctuation">(</span><span class="token number">20</span><span class="token punctuation">)</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword keyword-UNIQUE">UNIQUE</span><span class="token punctuation">,</span>
+    user_id <span class="token keyword keyword-INTEGER">INTEGER</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword keyword-REFERENCES">REFERENCES</span> users<span class="token punctuation">(</span>id<span class="token punctuation">)</span> <span class="token keyword keyword-ON">ON</span> <span class="token keyword keyword-DELETE">DELETE</span> <span class="token keyword keyword-CASCADE">CASCADE</span><span class="token punctuation">,</span>
+    content <span class="token keyword keyword-TEXT">TEXT</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span><span class="token punctuation">,</span>
+    processed_at <span class="token keyword keyword-TIMESTAMP">TIMESTAMP</span> <span class="token operator">NOT</span> <span class="token boolean">NULL</span> <span class="token keyword keyword-DEFAULT">DEFAULT</span> <span class="token keyword keyword-CURRENT_TIMESTAMP">CURRENT_TIMESTAMP</span>
+<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword keyword-CREATE">CREATE</span> <span class="token keyword keyword-INDEX">INDEX</span> idx_message_logs_user_id <span class="token keyword keyword-ON">ON</span> message_logs<span class="token punctuation">(</span>user_id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre><hr>
+<h3 id="er図簡易">ER図（簡易） </h3>
+<pre data-role="codeBlock" data-info="" class="language-text"><code>users
+  │
+  ├──&lt; user_settings (1:1)
+  │
+  ├──&lt; reminders (1:N)
+  │
+  └──&lt; message_logs (1:N)
+</code></pre><hr>
+<h3 id="想定クエリ例">想定クエリ例 </h3>
+<p><strong>タイマーAPIで通知対象ユーザーを取得</strong>:</p>
+<pre data-role="codeBlock" data-info="sql" class="language-sql sql"><code><span class="token keyword keyword-SELECT">SELECT</span> u<span class="token punctuation">.</span>discord_user_id<span class="token punctuation">,</span> u<span class="token punctuation">.</span>dm_channel_id<span class="token punctuation">,</span> r<span class="token punctuation">.</span>id<span class="token punctuation">,</span> r<span class="token punctuation">.</span>content
+<span class="token keyword keyword-FROM">FROM</span> users u
+<span class="token keyword keyword-JOIN">JOIN</span> reminders r <span class="token keyword keyword-ON">ON</span> u<span class="token punctuation">.</span>id <span class="token operator">=</span> r<span class="token punctuation">.</span>user_id
+<span class="token keyword keyword-JOIN">JOIN</span> user_settings s <span class="token keyword keyword-ON">ON</span> u<span class="token punctuation">.</span>id <span class="token operator">=</span> s<span class="token punctuation">.</span>user_id
+<span class="token keyword keyword-WHERE">WHERE</span> u<span class="token punctuation">.</span>is_active <span class="token operator">=</span> <span class="token boolean">true</span>
+  <span class="token operator">AND</span> s<span class="token punctuation">.</span>notification_enabled <span class="token operator">=</span> <span class="token boolean">true</span>
+  <span class="token operator">AND</span> r<span class="token punctuation">.</span>is_completed <span class="token operator">=</span> <span class="token boolean">false</span>
+  <span class="token operator">AND</span> r<span class="token punctuation">.</span>is_notified <span class="token operator">=</span> <span class="token boolean">false</span>
+  <span class="token operator">AND</span> r<span class="token punctuation">.</span>remind_at <span class="token operator">BETWEEN</span> :previous_tick <span class="token operator">AND</span> :current_tick<span class="token punctuation">;</span>
+</code></pre><p><strong>重複メッセージチェック</strong>:</p>
+<pre data-role="codeBlock" data-info="sql" class="language-sql sql"><code><span class="token keyword keyword-SELECT">SELECT</span> <span class="token keyword keyword-EXISTS">EXISTS</span><span class="token punctuation">(</span><span class="token keyword keyword-SELECT">SELECT</span> <span class="token number">1</span> <span class="token keyword keyword-FROM">FROM</span> message_logs <span class="token keyword keyword-WHERE">WHERE</span> message_id <span class="token operator">=</span> :message_id<span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code></pre>
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+  
+    </body></html>
